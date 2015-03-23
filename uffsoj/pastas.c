@@ -1,8 +1,8 @@
 #include<stdio.h>
 
-#define false 0
-#define true 1
-typedef int bool;
+//#define false 0
+//#define true 1
+//typedef int bool;
 
 
 int main(){
@@ -22,9 +22,15 @@ int main(){
 	bool check=false,err=false;
 	int ref=Ni/P;
 	Ni%P && (ref++);//pombal ;)
-	for(i=0;i<P;i++){
-		if(contadores[i]>ref)
-			err=true;
+	if (contadores[0]>ref){
+		err=true;
+	}else{
+		for(i=1;i<P;i++){
+			if(contadores[i]>ref||contadores[i-1] < contadores[i]){
+				err=true;
+				break;
+				}
+		}
 	}
 	if(err)
 		printf("N\n");
