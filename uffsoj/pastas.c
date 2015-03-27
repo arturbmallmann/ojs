@@ -1,10 +1,4 @@
 #include<stdio.h>
-
-#define false 0
-#define true 1
-typedef int bool;
-
-
 int main(){
 	int P,Ni;
 	scanf("%d %d",&P,&Ni);
@@ -16,15 +10,13 @@ int main(){
 		scanf("%d",&posicao);
 		contadores[posicao-1]++;
 	}
-//	for(i=0;i<P;i++)
-//		printf ("%d ",contadores[i]);
-
-	bool check=false,err=false;
+	int err=0;
 	int ref=Ni/P;
-	Ni%P && (ref++);//pombal ;)
+	if(Ni%P)
+		ref++;//pombal ;)
 	for(i=0;i<P;i++){
 		if(contadores[i]>ref)
-			err=true;
+			err=1;
 	}
 	if(err)
 		printf("N\n");
