@@ -1,4 +1,5 @@
 #include<stdio.h>
+
 int main(){
 	int P,Ni;
 	scanf("%d %d",&P,&Ni);
@@ -12,11 +13,16 @@ int main(){
 	}
 	int err=0;
 	int ref=Ni/P;
-	if(Ni%P)
-		ref++;//pombal ;)
-	for(i=0;i<P;i++){
-		if(contadores[i]>ref)
-			err=1;
+	Ni%P && (ref++);//pombal ;)
+	if (contadores[0]>ref){
+		err=true;
+	}else{
+		for(i=1;i<P;i++){
+			if(contadores[i]>ref||contadores[i-1] < contadores[i]){
+				err=true;
+				break;
+				}
+		}
 	}
 	if(err)
 		printf("N\n");
