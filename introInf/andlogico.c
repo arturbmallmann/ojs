@@ -1,9 +1,8 @@
 #include<stdio.h>
 int main(){
 	unsigned long long a = 0x5;
-	unsigned long long b = 0x5;
+	unsigned long long b = 0xffffffff;
 	printf("a %x, b %x \n", a , b ) ;
-//	printf("%x \n", ~(a ^ b)  );
 	unsigned long long r = a + b;
 	unsigned int result = ( r & 0xffffffff);
 	char cout;

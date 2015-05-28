@@ -5,7 +5,8 @@ void print_num(const num * v){
 	int tam = v->size;
 	u_int32 * value= v->value;
 	for(int i = 0 ; i < tam ; i++){
-		printf("value of %d is %x\n",i,value[i]);
+		printf("0x%x ",value[i]);
+//		printf("value of %d is %x\n",i,value[i]);
 	}
 	putchar('\n');
 }
@@ -28,7 +29,7 @@ num * read_num(){
 	int ts = strlen(entrada);
 	int tam = ts/8 + (ts%8==0?0:1);
 
-	u_int32 * value = newvalue;
+	u_int32 * value = newvalue(tam);
 	memset(value,0,tam * sizeof(u_int32));
 	
 	int des = (0x7ffffff8-ts) % 8;
@@ -47,18 +48,13 @@ num * read_num(){
 		valor = char_value(entrada[cont-des]);
 		shift = cont%8;
 		i=floor(cont/8);
-//		printf("algarismo %d: %x\nshift:%d\n",cont,valor,shift);
 		value[i] = value[i] | (u_int32) valor << (28 - (4*shift));
 	}
 
-//	for(int i = 0 ; i < tam ; i++){
-//		printf("value of %d is %x\n",i,value[i]);
-//	}
 	num * v = newnum;
 	v->size = tam;
 	v->value = value;
 	print_num( v );
-	printf("\ntam %d sobrou\n\n",tam);
 	return v;
 }
 
