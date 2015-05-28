@@ -1,33 +1,12 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
-typedef struct{
-	int size;
-	char * value;
-} num;
+#include"prova.h"
 
-num * _new (int size,char * value){
-	num * v = (num *) malloc(sizeof(num));
-	v->size = size;
-	if(value = 0 ){
-		v->value = (char *) malloc(size);
-		memset(v->value, 0 , v->size);
-	}
-}
-
-char sum_byte(char v1,char v2,char * cout,char cin){
-    unsigned int a = v1;// 0xff;
-	unsigned int b = v2;//0xff;
-	unsigned int r = a + b + cin;
-	char result = (char) r % 256;
-	*cout = (char) (r >> 8) & 0x1 ;
+unsigned int sum_part(u_int32 v1,u_int32 v2,char * cout,char cin){
+	u_int64 r = v1 + v2 + cin;
+	u_int32 result = (u_int32) ((u_int64) r & 0xffffffff);
+	*cout = (char) (r >> 32) & 0x1 ;
 	return result;
 }
 
-void print_num(const num * v){
-	for( int i = 0; i < v->size; i++ )
-		printf("%x\n", v->value[i]);
-}
 
 num * complete_sum(const num * v1, const num * v2,char op){
 	const num * maior;
@@ -40,9 +19,12 @@ num * complete_sum(const num * v1, const num * v2,char op){
 		maior = v2;
 		menor = v1;
 	}
-	printf("chegou aqui\n");
-	num * resultado = _new(maior->size + 1, 0);
-	// op : 0 = sum, op : 1 = sub
+
+	int size = maior->size + 1;
+	num * resultado = newnum;
+	resultado->size = size;
+	resultado->value = (u_int32*)malloc(size * sizeof(u_int32));
+
 	char cout, cin = op;
 
 	if( op ){
@@ -50,10 +32,11 @@ num * complete_sum(const num * v1, const num * v2,char op){
 			v2->value[i] = ~v2->value[i]; //v2->value[i] ^ 0xff;
 	}
 	for ( int i = 0; i < maior->size ; i++ ){
+	printf("chegou aqui\n");
 		if ( menor->size < i )
-			resultado->value[i] = sum_byte( menor->value[i], maior->value[i], &cout, cin);
+			resultado->value[i] = sum_part( menor->value[i], maior->value[i], &cout, cin);
 		else
-			resultado->value[i] = sum_byte( 0 , maior->value[i], &cout, cin );
+			resultado->value[i] = sum_part( 0 , maior->value[i], &cout, cin );
 		cin = cout;
 	}
 	return resultado;
@@ -68,42 +51,15 @@ num * sub (const num * v1, const num *v2){
 	return complete_sum(v1,v2,1);
 }
 
-num * read_num(){
-	char entrada[1000];
-	printf("entre com algarismos hexadecimais [0-9 + a - f]\n");
-	scanf("%s",entrada);
-	int tam = strlen(entrada)/2 + 1;
-	char value[tam];
-	memset(value,0,tam);
-	unsigned int valor;
-	int shift = 0;
-	int o = 0;
-	for(int i = 0 ; i < tam ; i++){
-		char x = entrada[i];
-		if(x >= '0' && x <= '9')
-			valor = x - '0';
-		else if(x>= 'a' && x <= 'f')
-			valor = x - 'a' + 10;
-		else if(x>= 'A' && x <= 'F')
-			valor = x - 'A' + 10;
-		if( i%2 == 0 ){
-			value[o] = value[o] | (unsigned int)valor*16;
-			o++;
-		}else
-			value[o] = value[o] | (unsigned int)valor;
-		printf("valor: %x byte:%x o: %d\n", valor, value[o],o);
-	}
-	printf("\n");
-	return _new ( o+1, value);
-}
 
 int main(){
 	num * a, * b;
 	a = read_num();
 	b = read_num();
-	print_num ( a );
-	print_num ( b );
-//	num * resultado = sum( a , b );
+//	print_num ( a );
+//	print_num ( b );
+	num * resultado = sum( a , b );
 //	num * resultado = complete_sum(&a, &b, 0);
-//	print_num ( resultado );
+	printf("resultado: ");
+	print_num ( resultado );
 }
