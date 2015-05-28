@@ -31,14 +31,15 @@ num * complete_sum(const num * v1, const num * v2,char op){
 		for ( int i = 0 ; i < v2->size; i++)
 			v2->value[i] = ~v2->value[i]; //v2->value[i] ^ 0xff;
 	}
-	for ( int i = 0; i < maior->size ; i++ ){
+	for ( int i = maior->size; i >= 0 ; i-- ){
 	printf("chegou aqui\n");
-		if ( menor->size < i )
-			resultado->value[i] = sum_part( menor->value[i], maior->value[i], &cout, cin);
-		else
+//		if ( menor->size < i )
+//			resultado->value[i] = sum_part( menor->value[i], maior->value[i], &cout, cin);
+//		else
 			resultado->value[i] = sum_part( 0 , maior->value[i], &cout, cin );
 		cin = cout;
 	}
+	if(!cout) resultado->size--;
 	return resultado;
 }
 

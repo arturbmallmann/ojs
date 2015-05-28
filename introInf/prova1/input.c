@@ -1,8 +1,11 @@
 #include "prova.h"
 
 void print_num(const num * v){
-	for(int i = 0 ; i < v->size ; i++){
-		printf("%x",i,v->value[i]);
+	printf("size of the num:%d\nvalue:",v->size);
+	int tam = v->size;
+	u_int32 * value= v->value;
+	for(int i = 0 ; i < tam ; i++){
+		printf("value of %d is %x\n",i,value[i]);
 	}
 	putchar('\n');
 }
@@ -24,33 +27,38 @@ num * read_num(){
 	scanf("%s",entrada);
 	int ts = strlen(entrada);
 	int tam = ts/8 + (ts%8==0?0:1);
-	u_int32 value[tam];
+
+	u_int32 * value = newvalue;
 	memset(value,0,tam * sizeof(u_int32));
-	u_int32 valor = 0;
-	int inicio = (0x7ffffff8-ts) % 8;
+	
+	int des = (0x7ffffff8-ts) % 8;
 	int f=0;
 	if(char_value(entrada[0]) > 7)
 		f=0xf;
-	for(int i=0; i < inicio;i++){
-		value[0] = value[0]|(u_int32) f << 28 - (4*i);
-	}
-	int shift = 0;
-	f = 0;
-	for(int i = 0; i < ts ; i++){
-		char x = entrada[i];
-		valor = char_value(x);
-		shift = i % 8;
-		f = tam - floor(i/8)-1;
-		value[f] = value[f] | (u_int32)valor << (28 - (4*shift));
+	int cont;
+	for(cont=0; cont < des;cont++){
+		value[0] = value[0]|(u_int32) f << 28 - (4*cont);
 	}
 
-	for(int i = 0 ; i < tam ; i++){
-		printf("value of %d is %x\n",i,value[i]);
+	int shift;
+		f = 0;
+	u_int32 valor = 0;
+	for(int i=0; (cont-des) < ts ; cont++){
+		valor = char_value(entrada[cont-des]);
+		shift = cont%8;
+		i=floor(cont/8);
+//		printf("algarismo %d: %x\nshift:%d\n",cont,valor,shift);
+		value[i] = value[i] | (u_int32) valor << (28 - (4*shift));
 	}
-	printf("tam %d sobrou %d \n",tam,inicio);
+
+//	for(int i = 0 ; i < tam ; i++){
+//		printf("value of %d is %x\n",i,value[i]);
+//	}
 	num * v = newnum;
 	v->size = tam;
 	v->value = value;
+	print_num( v );
+	printf("\ntam %d sobrou\n\n",tam);
 	return v;
 }
 

@@ -5,7 +5,7 @@
 typedef unsigned int u_int32;
 typedef unsigned long long u_int64;
 #define newnum ((num *) malloc(sizeof(num)));
-
+#define newvalue ((u_int32*) malloc(sizeof(u_int32*)*tam));
 typedef struct{
 	int size;
 	u_int32 * value;
